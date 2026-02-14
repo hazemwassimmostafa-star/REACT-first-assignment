@@ -1,39 +1,80 @@
 import { Link } from "react-router-dom";
 import blogsData from "../data/blogs.json";
-import "../Home.css"
+import BlogCard from "../components/BlogCard";
+
+import "../css/Home.css";
 
 function Home() {
+
+  /* GET BLOGS FROM JSON */
   const blogs =
+    blogsData.posts ||
     blogsData.blogs ||
     blogsData.data ||
-    blogsData.posts ||
-    blogsData;
+    blogsData ||
+    [];
 
-  const featuredBlogs = blogs.slice(0, 3); // أول 3 مقالات
+
+  /* GET FEATURED BLOGS (first 3 فقط) */
+  const featuredBlogs = blogs.slice(0, 3);
+
 
   return (
-   <div className="home">
-  <div className="home-container">
-    <div className="home-header">
-      <h1>Welcome to the Blog</h1>
-      <p>
-        Discover articles about photography, technology, and creativity.
-      </p>
+
+    <div className="home">
+
+
+      {/* FEATURED SECTION */}
+      <section className="featured-section">
+
+        <div className="section-header">
+
+          <h2 className="section-title">
+            أحدث المقالات
+          </h2>
+
+          <p className="section-description">
+            اكتشف أحدث المقالات والنصائح
+          </p>
+
+        </div>
+
+
+        <div className="home-blogs">
+
+          {featuredBlogs.map((blog) => (
+
+            <BlogCard
+              key={blog.id}
+              blog={blog}
+              view="list"
+            />
+
+          ))}
+
+        </div>
+
+
+        <div className="view-all-container">
+
+          <Link
+            to="/blogs"
+            className="view-all-button"
+          >
+
+            عرض جميع المقالات
+
+          </Link>
+
+        </div>
+
+      </section>
+
+
     </div>
 
-  <div className="home-grid">
-  {featuredBlogs.map((blog) => (
-    <div key={blog.id} className="home-card">
-      <h3>{blog.title}</h3>
-      <p>{blog.excerpt}</p>
-      <Link to={`/blogs/${blog.id}`}>Read more →</Link>
-    </div>
-  ))}
-</div>
-
-  </div>
-</div>
   );
+
 }
 
 export default Home;
